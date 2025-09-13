@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>StudyFlow — Personalized Study Platform (Demo)</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#6ee7b7;--muted:#94a3b8;--glass: rgba(255,255,255,0.03)}
+    *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    body{margin:0;background:linear-gradient(180deg,#071024 0%, #07132a 60%);color:#e6eef8}
+    .container{max-width:1100px;margin:28px auto;padding:20px}
+    header{display:flex;gap:16px;align-items:center;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#0ea5a3,#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700}
+    h1{margin:0;font-size:20px}
+    .grid{display:grid;grid-template-columns:270px 1fr;gap:18px}
+    .card{background:var(--card);padding:16px;border-radius:14px;box-shadow:0 6px 20px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03)}
+    nav .menu{display:flex;flex-direction:column;gap:8px}
+    .menu button{background:transparent;border:0;color:var(--muted);padding:10px 8px;border-radius:8px;text-align:left;cursor:pointer}
+    .menu button.active{color:var(--accent);background:linear-gradient(90deg, rgba(110,231,183,0.06), rgba(124,58,237,0.02))}
+    .upload-area{border:1px dashed rgba(255,255,255,0.06);padding:14px;border-radius:10px}
+    .small{font-size:13px;color:var(--muted)}
+    .controls{display:flex;gap:8px;margin-top:10px}
+    .btn{background:linear-gradient(90deg,#06b6d4,#7c3aed);color:#042027;padding:8px 12px;border-radius:8px;border:0;cursor:pointer}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+    .main-head{display:flex;justify-content:space-between;align-items:center}
+    .flex{display:flex;gap:12px}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+    .stat{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:12px;border-radius:10px}
+    .section{margin-top:14px}
+    textarea{width:100%;height:120px;background:var(--glass);border-radius:8px;padding:12px;border:1px solid rgba(255,255,255,0.03);color:inherit}
+    .list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+    .resource{padding:10px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);border:1px solid rgba(255,255,255,0.02)}
+    footer{margin-top:18px;color:var(--muted);font-size:13px}
+    canvas{width:100% !important;height:240px !important}
+    @media(max-width:900px){.grid{grid-template-columns:1fr;}.stats{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">SF</div>
+        <div>
+          <h1>StudyFlow — Personalized Study System</h1>
+          <div class="small">Document processing • Auto-assessments • Progress analytics • AI recommendations</div>
+        </div>
+      </div>
+      <div style="margin-left:auto" class="small">Demo frontend • Static AI hooks included</div>
+    </header>
+
+    <div class="grid">
+      <aside class="card">
+        <nav>
+          <div class="menu">
+            <button id="menu-dashboard" class="active">Dashboard</button>
+            <button id="menu-upload">Upload Docs</button>
+            <button id="menu-assess">Assessments</button>
+            <button id="menu-analytics">Analytics</button>
+            <button id="menu-reco">Study Recommendations</button>
+          </div>
+        </nav>
+
+        <div class="section">
+          <div class="small">Current Subject</div>
+          <select id="subject-select" style="width:100%;margin-top:8px;padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04)">
+            <option>Physics</option>
+            <option>Mathematics</option>
+            <option>Chemistry</option>
+            <option>Biology</option>
+          </select>
+        </div>
+
+        <div class="section">
+          <div class="small">Motivation</div>
+          <div style="margin-top:8px;font-weight:600">"Small daily progress leads to big results."</div>
+          <div class="small" style="margin-top:8px">Streak: <span id="streak">5</span> days</div>
+        </div>
+
+        <div class="section">
+          <div class="small">Quick Actions</div>
+          <div class="controls">
+            <label class="btn">+ New Note<input id="file-input" type="file" accept=".txt,.pdf,.docx" style="display:none"></label>
+            <button class="btn ghost" id="export-progress">Export</button>
+          </div>
+        </div>
+      </aside>
+
+      <main>
+        <section id="dashboard" class="card">
+          <div class="main-head">
+            <div>
+              <div class="small">Welcome back, Learner</div>
+              <h2>Physics • Mechanics • Week plan</h2>
+            </div>
+            <div class="small">Next assessment: <strong>Quiz on Kinematics</strong> — in 3 days</div>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <div class="small">Hours this week</div>
+              <div style="font-size:20px;font-weight:700">8.5</div>
+            </div>
+            <div class="stat">
+              <div class="small">Topics completed</div>
+              <div style="font-size:20px;font-weight:700">4/12</div>
+            </div>
+            <div class="stat">
+              <div class="small">Mastery</div>
+              <div style="font-size:20px;font-weight:700">68%</div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="small">Quick Notes (auto-summarized)</div>
+            <textarea id="auto-summary" placeholder="Upload notes or paste text to auto-summarize"></textarea>
+            <div style="display:flex;gap:8px;margin-top:8px"><button class="btn" id="summarize">Auto-summarize</button><button class="btn ghost" id="gen-assess">Generate assessment</button></div>
+          </div>
+
+        </section>
+
+        <section id="upload" class="card" style="display:none">
+          <h3>Document processing</h3>
+          <div class="upload-area">
+            <div class="small">Drop or select .txt, .pdf, or .docx (demo supports txt & pdf text extraction)</div>
+            <input id="doc-file" type="file" accept=".txt,.pdf" style="margin-top:10px">
+            <div class="small" style="margin-top:10px">Extracted text</div>
+            <textarea id="extracted" placeholder="Extracted text will appear here"></textarea>
+            <div style="margin-top:8px"><button class="btn" id="process-doc">Process Document</button></div>
+          </div>
+        </section>
+
+        <section id="assess" class="card" style="display:none">
+          <h3>Assessments</h3>
+          <div class="small">Generated quizzes & auto-grading (demo)</div>
+          <div class="section">
+            <button class="btn" id="create-quiz">Create 5-question quiz</button>
+          </div>
+          <div id="quiz-area" class="section list"></div>
+        </section>
+
+        <section id="analytics" class="card" style="display:none">
+          <h3>Progress analytics</h3>
+          <canvas id="progressChart"></canvas>
+          <div class="section">
+            <div class="small">Insights</div>
+            <ul>
+              <li id="insight-1">You're weakest in rotational motion. Recommend 30 mins revision.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="reco" class="card" style="display:none">
+          <h3>Study recommendations (AI-driven)</h3>
+          <div class="small">Personalized plan & resources</div>
+          <div id="reco-box" class="section">
+            <div class="resource">Daily plan: 45 min focused practice on kinematics + 15 min conceptual reading.</div>
+            <div class="resource">Recommended exercise set: H.C. Verma problems (Ch. 3)</div>
+          </div>
+        </section>
+
+        <footer class="card">
+          <div class="small">Subject info — Physics</div>
+          <div style="margin-top:8px">Physics is the study of matter, energy, and the interactions between them. Topics include mechanics, electromagnetism, thermodynamics, optics, and modern physics.</div>
+          <div class="section">
+            <div class="small">Motivational Thoughts</div>
+            <div style="margin-top:8px">"Learning is a marathon, not a sprint. Solve one problem today better than yesterday."</div>
+          </div>
+
+          <div class="section">
+            <div class="small">Reference resources (demo)</div>
+            <div class="list">
+              <div class="resource">Books: Concepts of Physics — H.C. Verma; Fundamentals of Physics — Halliday & Resnick</div>
+              <div class="resource">Channels: Veritasium, Khan Academy, Walter Lewin (MIT OCW)</div>
+              <div class="resource">Websites: Khan Academy, MIT OpenCourseWare, HyperPhysics</div>
+            </div>
+          </div>
+        </footer>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- External libs: Chart.js, pdf.js (via CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+  <script>
+    // Simple UI switching
+    const sections = {dashboard:document.getElementById('dashboard'), upload:document.getElementById('upload'), assess:document.getElementById('assess'), analytics:document.getElementById('analytics'), reco:document.getElementById('reco')};
+    document.querySelectorAll('aside .menu button').forEach(btn=>btn.addEventListener('click',e=>{document.querySelectorAll('aside .menu button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const id = btn.id.replace('menu-',''); Object.values(sections).forEach(s=>s.style.display='none'); sections[id].style.display='block';}));
+
+    // File extraction for txt & pdf (client-side)
+    document.getElementById('doc-file').addEventListener('change',async(e)=>{
+      const f = e.target.files[0]; if(!f) return; const name = f.name.toLowerCase();
+      if(name.endsWith('.txt')){ const txt = await f.text(); document.getElementById('extracted').value = txt }
+      else if(name.endsWith('.pdf')){
+        const arrayBuff = await f.arrayBuffer(); const pdf = await pdfjsLib.getDocument({data:arrayBuff}).promise; let txt='';
+        const maxPages = Math.min(5,pdf.numPages);
+        for(let i=1;i<=maxPages;i++){ const page = await pdf.getPage(i); const content = await page.getTextContent(); const strings = content.items.map(it=>it.str); txt += strings.join(' ') + '\n\n'; }
+        document.getElementById('extracted').value = txt;
+      } else { alert('Only .txt and .pdf supported in demo') }
+    });
+
+    // Auto-summarize (very simple heuristic)
+    document.getElementById('summarize').addEventListener('click',()=>{
+      const text = document.getElementById('extracted').value || document.getElementById('auto-summary').value;
+      if(!text) return alert('Paste or upload some text first');
+      const sentences = text.split(/[\.\n]\s+/).filter(s=>s.trim().length>20);
+      const top = sentences.slice(0,3).join('. ') + (sentences[3]? '...' : '');
+      document.getElementById('auto-summary').value = top;
+    });
+
+    // Generate a simple 5-question quiz from text (mask nouns/phrases)
+    function maskSentence(s){ const words = s.split(' '); if(words.length<6) return null; const idx = Math.floor(words.length/2); words[idx] = '_____'; return words.join(' '); }
+    document.getElementById('create-quiz').addEventListener('click',()=>{
+      const text = document.getElementById('extracted').value || document.getElementById('auto-summary').value;
+      if(!text) return alert('Provide text to generate quiz');
+      const sentences = text.split(/[\.\n]\s+/).filter(s=>s.trim().length>20);
+      const quizArea = document.getElementById('quiz-area'); quizArea.innerHTML='';
+      for(let i=0;i<5;i++){ const s = sentences[i] || sentences[Math.floor(Math.random()*sentences.length)]; const q = maskSentence(s); if(!q) continue; const div = document.createElement('div'); div.className='resource'; div.innerHTML = `<div><strong>Q${i+1}.</strong> ${q}</div><div style="margin-top:8px"><input placeholder='Your answer' style='width:60%;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.04)'><button class='btn' style='margin-left:8px' onclick='grade(this)'>Submit</button></div>`; quizArea.appendChild(div); }
+    });
+    window.grade = function(btn){ const input = btn.previousElementSibling; const ans = input.value.trim(); if(!ans) return alert('Type an answer'); btn.innerText='Graded'; btn.disabled=true; }
+
+    // Chart demo
+    const ctx = document.getElementById('progressChart').getContext('2d');
+    const chart = new Chart(ctx,{type:'line',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{label:'Study hours',data:[1,1.5,0.5,2,2,0.5,0.0],fill:true}]},options:{scales:{y:{beginAtZero:true}}}});
+
+    // AI recommendations hook (demo). Replace with real API call to an AI model for richer recommendations.
+    async function fetchAIRecommendations(profile){
+      // Example: send profile to backend AI endpoint. Here we fallback to heuristics.
+      try{
+        // const res = await fetch('/api/ai/recommend',{method:'POST',body:JSON.stringify(profile)}); // uncomment when backend ready
+        // const data = await res.json(); return data;
+        // Fallback heuristic:
+        return {plan:'45 min focused practice on problem solving; 20 min concept video; 10 min spaced-recall flashcards',resources:['H.C. Verma Ch.3 problems','Walter Lewin Lectures','Khan Academy Kinematics']}
+      }catch(e){ return {plan:'Read a concept summary + solve 3 problems',resources:['H.C. Verma','Khan Academy']} }
+    }
+
+    // Demo: when opening recommendations tab
+    document.getElementById('menu-reco').addEventListener('click',async()=>{
+      const r = await fetchAIRecommendations({subject:document.getElementById('subject-select').value});
+      const box = document.getElementById('reco-box'); box.innerHTML = '';
+      const p = document.createElement('div'); p.className='resource'; p.innerText = 'Daily plan: ' + r.plan; box.appendChild(p);
+      r.resources.forEach(it=>{ const d = document.createElement('div'); d.className='resource'; d.innerText = 'Resource: ' + it; box.appendChild(d); });
+    });
+
+    // Export demo json
+    document.getElementById('export-progress').addEventListener('click',()=>{
+      const data = {subject:document.getElementById('subject-select').value,streak:document.getElementById('streak').innerText,mastery:'68%',hours:8.5};
+      const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download='studyflow-export.json'; a.click();
+    });
+
+  </script>
+</body>
+</html>
